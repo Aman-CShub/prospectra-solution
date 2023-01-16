@@ -1,0 +1,285 @@
+Coding solution 
+
+ 
+
+Solution1: 
+
+ import sqlite3 
+
+from flask import Flask, jsonify, request 
+
+app = Flask(__name__) 
+
+# Connect to the database 
+
+connection = sqlite3.connect('entries.db') 
+
+# Create the entries table if it doesn't exist 
+
+connection.execute('''CREATE TABLE IF NOT EXISTS entries 
+
+    (title TEXT, description TEXT, category TEXT)''') 
+
+@app.route('/entries', methods=['POST']) 
+
+def create_entry(): 
+
+    # Get the data from the request body 
+
+    data = request.get_json() 
+
+    title = data.get('title') 
+
+    description = data.get('description') 
+
+    category = data.get('category') 
+
+    # Insert the data into the database 
+
+    connection.execute(f"INSERT INTO entries (title, description, category) VALUES ('{title}', '{description}', '{category}')") 
+
+    connection.commit() 
+
+    return jsonify({'message': 'entry created successfully'}), 201 
+
+@app.route('/entries', methods=['GET']) 
+
+def get_entries(): 
+
+    # Retrieve all entries from the database 
+
+    cursor = connection.execute("SELECT * FROM entries") 
+
+    entries = cursor.fetchall() 
+
+    # Convert the entries to a list of dictionaries 
+
+    entries = [{'title': entry[0], 'description': entry[1], 'category': entry[2]} for entry in entries] 
+
+    return jsonify(entries) 
+
+ 
+ 
+
+if __name__ == '__main__': 
+
+    app.run(debug=True) 
+
+ from flask import Flask, jsonify, request 
+
+app = Flask(__name__) 
+
+# Sample data 
+
+data = { 
+
+    "category1": [ 
+
+        {"title": "Title 1", "description": "Description 1"}, 
+
+        {"title": "Title 2", "description": "Description 2"} 
+
+    ], 
+
+    "category2": [ 
+
+        {"title": "Title 3", "description": "Description 3"}, 
+
+        {"title": "Title 4", "description": "Description 4"} 
+
+    ] 
+
+} 
+
+@app.route('/items', methods=['GET']) 
+
+def get_items(): 
+
+    category = request.args.get('category') 
+
+    items = data.get(category, []) 
+
+    return jsonify(items) 
+
+if __name__ == '__main__': 
+
+    app.run(debug=True) 
+
+ 
+
+Soloution2: 
+
+import sqlite3 
+
+from flask import Flask, jsonify, request 
+
+app = Flask(__name__) 
+
+# Connect to the database 
+
+connection = sqlite3.connect('entries.db') 
+
+# Create the entries table if it doesn't exist 
+
+connection.execute('''CREATE TABLE IF NOT EXISTS entries 
+
+    (title TEXT, description TEXT, category TEXT)''') 
+
+@app.route('/entries', methods=['POST']) 
+
+def create_entry(): 
+
+    # Get the data from the request body 
+
+    data = request.get_json() 
+
+    title = data.get('title') 
+
+    description = data.get('description') 
+
+    category = data.get('category') 
+
+ 
+ 
+
+    # Insert the data into the database 
+
+    connection.execute(f"INSERT INTO entries (title, description, category) VALUES ('{title}', '{description}', '{category}')") 
+
+    connection.commit() 
+
+    return jsonify({'message': 'entry created successfully'}), 201 
+
+@app.route('/entries', methods=['GET']) 
+
+def get_entries(): 
+
+    # Retrieve all entries from the database 
+
+    cursor = connection.execute("SELECT * FROM entries") 
+
+    entries = cursor.fetchall() 
+
+    # Convert the entries to a list of dictionaries 
+
+    entries = [{'title': entry[0], 'description': entry[1], 'category': entry[2]} for entry in entries] 
+
+    return jsonify(entries) 
+
+if __name__ == '__main__': 
+
+    app.run(debug=True) 
+
+ 
+
+Solution 3: 
+
+Implementing suitable authentication and permission systems will make sure that only permitted users may access the API and carry out particular tasks. 
+
+Validate all input data to stop bad data from being sent to the API, such as through SQL injection attacks. 
+
+HTTPS: To encrypt data in transit and guard against man-in-the-middle attacks, use secure HTTPS connection. 
+
+Implement logging and monitoring to keep track of API usage and find any security holes. 
+
+Implementing correct error handling will guarantee that, in the event that the API fails, the proper error messages are returned and sensitive data is not exposed. 
+
+Implementing rate restriction will stop DDoS attacks and API exploitation. 
+
+Caching: Use caching to enhance the API's scalability and speed. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Theory Challenge solution 
+
+ 
+
+Formula written as: 
+
+ 
+
+from flask import Flask, jsonify, request 
+
+import csv 
+
+app = Flask(__name__) 
+
+@app.route('/calculate', methods=['POST']) 
+
+def calculate_values(): 
+
+data = request.get_json() # get json data from request 
+
+output = {} 
+
+for key, value in data.items(): 
+
+if value.startswith("="): 
+
+output[key] = eval(value[1:]) 
+
+else: 
+
+output[key] = int(value) 
+
+return jsonify(output) 
+
+if __name__ == '__main__': 
+
+app.run() 
+
+ 
+
+Solution1 thoery: 
+
+Giving the wrong file path: The software will raise an error and gracefully exit if the user gives the wrong file path or the file does not exist. 
+
+Providing a file that is incorrectly formatted as CSV: If the user submits a file that is incorrectly formatted as CSV, the software will raise an error and gracefully terminate. 
+
+Giving a formula that cannot be evaluated or is not valid: If the user gives a formula that cannot be evaluated or is not valid, the application will produce an error and gracefully terminate. 
+
+Giving a formula the wrong syntax or amount of arguments: If the user gives a formula the wrong syntax or number of arguments, the application will issue an error and gracefully terminate. 
+
+ 
+
+Solution2: 
+
+File not found: The application will raise an error and gracefully exit if the input file cannot be located. 
+
+Formula and invalid file format: If the input file is not in the proper CSV format, the software will raise an error and gracefully depart. 
+
+The software will raise an error and gracefully exit if the formula contains an incorrect number of arguments or incorrect grammar. 
+
+ 
+
+Solution3: 
+
+Giving the wrong file path: The software will raise an error and gracefully exit if the user gives the wrong file path or the file does not exist. 
+
+  
+
+Providing a file that is incorrectly formatted as CSV: If the user submits a file that is incorrectly formatted as CSV, the software will raise an error and gracefully terminate. 
+
+  
+
+If we offer a formula that is invalid or unable to be assessed: The user's formula must be valid or able to be evaluated for the application to raise an error and gracefully quit. 
+
+  
+
+By supplying a formula with an incorrectly formatted or numbered set of parameters. 
+
+ 
+
+ 
+
+ 
+
+ 
